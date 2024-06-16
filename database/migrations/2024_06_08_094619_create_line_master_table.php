@@ -9,19 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-	
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('line_master', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('franchise_id')->nullable(false);
             $table->text('name')->nullable(false);
-            $table->text('phone_number')->nullable();
-            $table->text('email_id')->nullable();
-            $table->text('address')->nullable();
-            $table->text('profession')->nullable();
-            $table->timestamp('is_active')->nullable();
-            $table->timestamp('is_deleted')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('line_master');
     }
 };

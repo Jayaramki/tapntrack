@@ -8,11 +8,15 @@ use App\Models\Customer;
 
 class CustomerController extends Controller
 {
+    private $user;
+
+    public function __construct(){
+        $user = Auth::user();
+    }
     //Add API (POST)
     public function add(Request $request){
         // Data Validation
         $request->validate([
-            'franchise_id' => 'required|integer',
             'name' => 'required|string',
             'phone_number' => 'string|nullable',
             'email_id' => 'email|nullable',
@@ -25,7 +29,7 @@ class CustomerController extends Controller
         
         // Create User
         $customer = Customer::create([
-            'franchise_id' => $request->franchise_id,
+            'franchise_id' => $user->franchise_id,
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'email_id' => $request->first_name,
@@ -99,6 +103,51 @@ class CustomerController extends Controller
             'status' => true,
             'message' => 'Customer deleted successfully!',
             'customer' => $customer
+        ], 200);
+    }
+
+    //Get Customer API (GET)
+    public function get($id){
+        // Get Customer
+        $customer = Customer::find($id);
+
+        if (!$customer) {
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Customer fetched successfully!',
+            'customer' => $customer
+        ], 200);
+    }
+
+    //Get All Customers API (GET)
+    public function getAll(){
+        // Get All Customers where is_deleted is null
+        $customers = Customer::where('is_deleted', null)
+                            ->where('franchise_id', $user->franchise_id)
+                            ->get();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Customers fetched successfully!',
+            'customers' => $customers
+        ], 200);
+    }
+
+    //Get All Active Customers API (GET)
+    public function getAllActive(){
+        // Get All Active Customers and is_deleted is null
+        $customers = Customer::where('is_deleted', null)
+                    ->where('franchise_id', $user->franchise_id)
+                    ->where('is_active', '!=', null)
+                    ->get();
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Active Customers fetched successfully!',
+            'customers' => $customers
         ], 200);
     }
 }
