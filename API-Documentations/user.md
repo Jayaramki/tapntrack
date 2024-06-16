@@ -240,7 +240,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
     "message": "User password updated successfully!"
 }
 ```
-**Failure Response**
+**Failure Responses**
 ```
 {
     "status": false,
