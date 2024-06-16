@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->timestamp('is_active')->nullable();
+            $table->boolean('is_active')->nullable()->default(true);
             $table->timestamp('is_deleted')->nullable();
             $table->rememberToken();
             $table->timestamps();
