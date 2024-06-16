@@ -1,4 +1,4 @@
-# Login and Logout API Documentation
+# Login API Documentation
 
 ## Base URL
 ```
