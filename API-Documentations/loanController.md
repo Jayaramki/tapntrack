@@ -1,8 +1,17 @@
-# Loan module API Documentation
+# Loan API Documentation
 
-## Loan
-
-### 1. Add Loan API
+## Base URL
+```
+https://api.<domain-name>.com/
+```
+## Authentication
+All endpoints require a valid License key and API token. Include the token in the Authorization header as follows:
+```
+Authorization: Bearer YOUR_API_TOKEN
+X-LICENSE-KEY: YOUR_LICENSE_KEY
+```
+## Endpoints
+#### 1. Add Loan API
 
 **URL:** `/api/loan/add`\
 **Method:** POST\
