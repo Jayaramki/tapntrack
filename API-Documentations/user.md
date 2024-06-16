@@ -11,7 +11,7 @@ Authorization: Bearer YOUR_API_TOKEN
 X-LICENSE-KEY: YOUR_LICENSE_KEY
 ```
 ## Endpoints
-#### 1. Add Admin User API
+#### 1. Add Admin User API ***(Only for internal purpose)***
 
 **URL:** `/api/user/add-admin-user`\
 **Method:** POST\
