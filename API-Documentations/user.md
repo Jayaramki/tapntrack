@@ -64,7 +64,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 2. Get LoggedIn User Profile API
 
-**URL:** `api/user/profile`\
+**URL:** `api/user/get`\
 **Method:** GET\
 **Success Response:**
 ```
@@ -98,7 +98,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 3. Get User By ID API
 
-**URL:** `/api/user/profile/{id}`\
+**URL:** `/api/user/get/{id}`\
 **Method:** GET\
 **Success Response:**
 ```
@@ -133,7 +133,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 4. Update LoggedIn user profile API
 
-**URL:** `/api/user/update-profile`\
+**URL:** `/api/user/update`\
 **Method:** POST\
 **Request Payload:**
 ```
@@ -178,7 +178,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 5. Update User By ID API
 
-**URL:** `/api/user/update-profile/{id}`\
+**URL:** `/api/user/update/{id}`\
 **Method:** POST\
 **Request Payload:**
 ```
@@ -293,6 +293,50 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
+### 8. Admin Changing Username for other users API
+
+**URL:** `/api/user/update-username/{id}`\
+**Method:** POST\
+**Request Payload:**
+```
+{
+    "username": "agent1"
+}
+```
+**Success Response:**
+```
+{
+    "status": true,
+    "message": "Username has been updated successfully!"
+}
+```
+**Failure Responses**
+```
+{
+    "status": false,
+    "message": "User not found!"
+}
+```
+```
+{
+    "message": "The username has already been taken.",
+    "errors": {
+        "username": [
+            "The username has already been taken."
+        ]
+    }
+}
+```
+```
+{
+    "message": "The username field is required.",
+    "errors": {
+        "username": [
+            "The username field is required."
+        ]
+    }
+}
+```
 
 
 
