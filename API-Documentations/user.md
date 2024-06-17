@@ -178,7 +178,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 5. Update User By ID API
 
-**URL:** `/api/user/update/{id}`\
+**URL:** `/api/user/update-profile/{id}`\
 **Method:** POST\
 **Request Payload:**
 ```
