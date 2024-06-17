@@ -170,7 +170,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 2. Get LoggedIn User Profile API
+### 4. Get LoggedIn User Profile API
 
 **URL:** `api/user/get`\
 **Method:** GET\
@@ -204,7 +204,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 3. Get User By ID API
+### 5. Get User By ID API
 
 **URL:** `/api/user/get/{id}`\
 **Method:** GET\
@@ -239,7 +239,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 4. Update LoggedIn user profile API
+### 6. Update LoggedIn user profile API
 
 **URL:** `/api/user/update`\
 **Method:** POST\
@@ -284,7 +284,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 5. Update User By ID API
+### 7. Update User By ID API
 
 **URL:** `/api/user/update/{id}`\
 **Method:** POST\
@@ -330,7 +330,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 6. Change Password API for loggedIn User
+### 8. Change Password API for loggedIn User
 
 **URL:** `/api/user/change-password`\
 **Method:** POST\
@@ -366,7 +366,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 7. Admin Changing Password for other users API
+### 9. Admin Changing Password for other users API
 
 **URL:** `/api/user/update-password/{id}`\
 **Method:** POST\
@@ -401,7 +401,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 8. Admin Changing Username for other users API
+### 10. Admin Changing Username for other users API
 
 **URL:** `/api/user/update-username/{id}`\
 **Method:** POST\
