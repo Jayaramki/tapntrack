@@ -338,3 +338,56 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
     }
 }
 ```
+
+### 2. Get All Users API
+This API will be used for Admin user to get list of all users under his profile
+
+**URL:** `api/user/get-all`\
+**Method:** GET\
+**Success Response:**
+```
+{
+    "status": true,
+    "message": "Users fetched successfully!",
+    "users": [
+        {
+            "id": 2,
+            "user_type": 3,
+            "franchise_id": 1,
+            "username": "agent1",
+            "first_name": "Agent",
+            "last_name": "1",
+            "email": "agent1@fel.com",
+            "email_verified_at": null,
+            "phone": "9876543210",
+            "address": "Chennai",
+            "is_active": 1,
+            "is_deleted": null,
+            "created_at": "2024-06-16T17:29:48.000000Z",
+            "updated_at": "2024-06-16T17:51:41.000000Z"
+        },
+        {
+            "id": 3,
+            "user_type": 3,
+            "franchise_id": 1,
+            "username": "agent2",
+            "first_name": "Agent",
+            "last_name": "2",
+            "email": "agent2@fel.com",
+            "email_verified_at": null,
+            "phone": "9876543210",
+            "address": "Chennai",
+            "is_active": 1,
+            "is_deleted": null,
+            "created_at": "2024-06-17T03:13:01.000000Z",
+            "updated_at": "2024-06-17T03:13:01.000000Z"
+        }
+    ]
+}
+```
+**Failure Response**
+```
+{
+    "message": "Unauthenticated."
+}
+```
