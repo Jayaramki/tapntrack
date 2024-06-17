@@ -118,6 +118,58 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
+### 3. Add User API
+
+**URL:** `/api/user/add`\
+**Method:** POST\
+**Request Payload:**
+```
+{
+    "user_type": 3,
+    "username":"agent2",
+    "password":"123456",
+    "password_confirmation":"123456",
+    "first_name":"Agent",
+    "last_name":"2",
+    "email":"agent2@fel.com",
+    "phone":"9876543210",
+    "address":"Chennai",
+    "is_active": true
+}
+```
+**Success Response:**
+```
+{
+    "status": true,
+    "message": "User created successfully!",
+    "user": {
+        "user_type": 3,
+        "franchise_id": 1,
+        "username": "agent2",
+        "first_name": "Agent",
+        "last_name": "2",
+        "email": "agent2@fel.com",
+        "phone": "9876543210",
+        "address": "Chennai",
+        "is_active": true,
+        "updated_at": "2024-06-17T03:13:01.000000Z",
+        "created_at": "2024-06-17T03:13:01.000000Z",
+        "id": 3
+    }
+}
+```
+**Failure Response**
+```
+{
+    "message": "The username field is required.",
+    "errors": {
+        "username": [
+            "The username field is required."
+        ]
+    }
+}
+```
+
 ### 2. Get LoggedIn User Profile API
 
 **URL:** `api/user/get`\
