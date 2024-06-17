@@ -53,8 +53,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function getFranchiseId(): int
-    {
-        return ($this->user_type > 1) ? $this->franchise_id : $this->id;
-    }
+    // Specify the guard for the User model
+    protected $guard_name = 'api';
 }

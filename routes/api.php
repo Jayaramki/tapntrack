@@ -26,21 +26,25 @@ use App\Http\Controllers\Api\CustomerController;
 
 // Open Routes
 Route::post('login', [ApiController::class, 'login']);
-Route::post('user/add-admin-user', [UserController::class, 'addAdminUser']);
+Route::post('user/add-admin', [UserController::class, 'addAdminUser']);
+Route::post('user/update-admin/{id}', [UserController::class, 'addAdminUser']);
+
 
 // Protected Routes
 Route::group([
-    "middleware" => ['auth:api' ]
+    "middleware" => ['auth:api']
 ], function() {
 
     /* User Module */
+    //pass optional parameter for update api
     Route::post('user/add', [UserController::class, 'addUser']);
-    Route::get('user/profile', [UserController::class, 'profile']);
-    Route::get('user/get', [UserController::class, 'getUser']);
+    Route::get('user/get/{id?}', [UserController::class, 'profile']);
+    Route::post('user/update/{id?}', [UserController::class, 'updateProfile']);
+    Route::post('user/update-username/{id?}', [UserController::class, 'changeUsername']);
     Route::get('user/get-all', [UserController::class, 'listUsers']);
-    Route::put('user/update-profile', [UserController::class, 'updateProfile']);
-    Route::put('user/change-password', [UserController::class, 'changePassword']);
-    Route::put('user/delete-user', [UserController::class, 'deleteUser']);
+    Route::post('user/change-password', [UserController::class, 'changePassword']);
+    Route::post('user/update-password/{id}', [UserController::class, 'updateUserPassword']);
+    Route::post('user/delete-user', [UserController::class, 'deleteUser']);
     Route::get('logout', [ApiController::class, 'logout']);
 
     /* Customer Module */
