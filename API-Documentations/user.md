@@ -98,7 +98,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 3. Get User By ID API
 
-**URL:** `/api/user/get/{id}`\
+**URL:** `/api/user/profile/{id}`\
 **Method:** GET\
 **Success Response:**
 ```
