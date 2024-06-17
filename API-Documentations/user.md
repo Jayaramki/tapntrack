@@ -83,7 +83,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 ```
 {
     "status": true,
-    "message": "Admin created successfully!",
+    "message": "Admin updated successfully!",
     "user": {
         "user_type": "1",
         "franchise_id": 0,
@@ -101,6 +101,12 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 **Failure Response**
+```
+{
+    "status": false,
+    "message": "User not found!"
+}
+```
 ```
 {
     "message": "The username field is required.",
