@@ -1,9 +1,9 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/your_cpanel_username/public_html/devapi.tapntrack.in/
+    - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in/
     - /bin/cp -R public/* $DEPLOYPATH
-    - cd /home/your_cpanel_username/public_html/devapi.tapntrack.in
+    - cd /home/tapntrac/public_html/devapi.tapntrack.in
     - if [ ! -f composer.phar ]; then curl -sS https://getcomposer.org/installer | php; fi
     - php composer.phar install --optimize-autoloader --no-dev
     - php artisan migrate --force
