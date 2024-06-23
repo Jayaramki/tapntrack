@@ -21,6 +21,8 @@ class ValidateLicenseKey
         // Retrieve the License key from the request headers
         $licenseKey = $request->header('X-LICENSE-KEY');
 
+        //Test line to check if the license key is being passed
+
         // Check if the License key is provided
         if (!$licenseKey) {
             return response()->json(['error' => 'License key is required'], 401);
