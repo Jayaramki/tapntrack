@@ -26,7 +26,6 @@ class UserController extends Controller
             'app_type' => 'string|nullable',    //app_type should only accept D, W, M
         ]);
         
-        $is_active = isset($request->is_active) && $request->is_active  ? true : false;
         $app_type = isset($request->app_type) ? $request->app_type : 'D';
         
         // Create User
@@ -40,7 +39,7 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'is_active' => $is_active  
+            'is_active' => $request->is_active  
         ]);
         //Assign Role
         $user->assignRole('admin');
@@ -60,11 +59,19 @@ class UserController extends Controller
         ], 201);
     }
 
-    //Register Other users API (POST)
-    public function addUser(Request $request){
+    //Register Admin API (POST)
+    public function updateAdminUser(Request $request, $id){
+
+        $user = User::find($id);
+        if(!$user){
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found!'
+            ], 404);
+        }
+
         // Data Validation
         $request->validate([
-            'user_type' => 'required|integer',
             'username' => 'required|string|unique:users,username',
             'password' => 'required|string',
             'first_name' => 'required|string',
@@ -76,13 +83,10 @@ class UserController extends Controller
             'app_type' => 'string|nullable',    //app_type should only accept D, W, M
         ]);
         
-        $is_active = isset($request->is_active) && $request->is_active == 0 ? null : now()->utc();
         $app_type = isset($request->app_type) ? $request->app_type : 'D';
         
-        // Create User
-        $user = User::create([
-            'user_type' => $request->user_type,
-            'franchise_id' => $user->getFranchiseId(),
+        // Update Admin User
+        $user->update([
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'first_name' => $request->first_name,
@@ -90,7 +94,48 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'is_active' => $is_active  
+            'is_active' => $request->is_active  
+        ]);
+        //Assign Role
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Admin updated successfully!',
+            'user' => $user
+        ], 201);
+    }
+
+    //Register Other users API (POST)
+    public function addUser(Request $request){
+        //print_r(Auth::user()->hasAnyPermission('user'));exit;
+        // Data Validation
+        $request->validate([
+            'user_type' => 'required|integer|not_in:1',
+            'username' => 'required|string|unique:users,username',
+            'password' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'string|nullable',
+            'email' => 'email|nullable',
+            'phone' => 'string|nullable',
+            'address' => 'string|nullable',
+            'is_active' => 'boolean|nullable',
+            'app_type' => 'string|nullable',    //app_type should only accept D, W, M
+        ]);
+        
+        $franchise_id = Auth::user()->user_type == UserType::ADMIN ? Auth::user()->id : Auth::user()->franchise_id;
+        
+        // Create User
+        $user = User::create([
+            'user_type' => $request->user_type,
+            'franchise_id' => $franchise_id,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'is_active' => $request->is_active  
         ]);
 
         switch ($user->user_type) {
@@ -116,8 +161,18 @@ class UserController extends Controller
     }
 
     //Profile API (GET)
-    public function profile(){
-        $user = Auth::user();
+    public function profile($id=null){
+        if($id){
+            $user = User::find($id);
+            if(!$user){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found!'
+                ], 404);
+            }
+        } else {
+            $user = Auth::user();
+        }
         
         return response()->json([
             'status' => true,
@@ -126,52 +181,37 @@ class UserController extends Controller
         ], 200);
     }
 
-    //Get User API (GET)
-    public function getUser($id){
-        $user = User::find($id);
-        if(!$user){
-            return response()->json([
-                'status' => false,
-                'message' => 'User not found!'
-            ], 404);
-        }
+    //Update Profile API (POST)
+    public function updateProfile(Request $request, $id=null){
 
-        return response()->json([
-            'status' => true,
-            'message' => 'User fetched successfully!',
-            'user' => $user
-        ], 200);
-    }
-
-    //Update Profile API (PUT)
-    public function updateProfile(Request $request, $id){
-        $response = $this->getUser($id);
-        if($response->getStatusCode() != 200){
-            return $response;
+        if($id){
+            $user = User::find($id);
+            if(!$user){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found!'
+                ], 404);
+            }  
         } else {
-            $user = $response->getData()->user;
+            $user = Auth::user();
         }
+        
         // Data Validation
         $request->validate([
             'first_name' => 'string|nullable',
             'last_name' => 'string|nullable',
-            'username' => 'string|required|unique:users,username,'.$id.',id',
             'email' => 'email|nullable',
             'phone' => 'string|nullable',
             'address' => 'string|nullable',
-            'is_active' => 'integer|nullable'
+            'is_active' => 'boolean|nullable'
         ]);
 
-        $is_active = isset($request->is_active) && $request->is_active == 0 ? null : now()->utc();
-        
-        // Update User
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
-        $user->username = $request->username;
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->address = $request->address;
-        $user->is_active = $is_active;
+        $user->is_active = $request->is_active;
         $user->save();
 
         return response()->json([
@@ -179,15 +219,45 @@ class UserController extends Controller
             'message' => 'User profile updated successfully!',
             'user' => $user
         ], 200);
+    }   
+
+    //Update User Password API (POST)
+    public function changeUsername(Request $request, $id=null){
+        if($id){
+            $user = User::find($id);
+            if(!$user){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found!'
+                ], 404);
+            }
+        } else {
+            $user = Auth::user();
+        }
+        
+        // Data Validation
+        $request->validate([
+            'username' => 'required|string|unique:users,username,'.$user->id
+        ]);
+        
+        // Update Password
+        $user->username = $request->username;
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Username has been updated successfully!'
+        ], 200);
     }
 
-    //Update User Password API (PUT)
+    //Update User Password API (POST)
     public function updateUserPassword(Request $request, $id){
-        $response = $this->getUser($id);
-        if($response->getStatusCode() != 200){
-            return $response;
-        } else {
-            $user = $response->getData()->user;
+        $user = User::find($id);
+        if(!$user){
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found!'
+            ], 404);
         }
         // Data Validation
         $request->validate([
@@ -204,8 +274,8 @@ class UserController extends Controller
         ], 200);
     }
 
-    //Change Password API (PUT)
-    public function changePassword(Request $request, $id){
+    //Change Password API (POST)
+    public function changePassword(Request $request){
         // Data Validation
         $request->validate([
             'old_password' => 'required|string',
@@ -231,7 +301,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    //Delete User API (DELETE)
+    //Delete User API (POST)
     public function deleteUser(Request $request){
         // Data Validation
         $request->validate([
@@ -258,11 +328,9 @@ class UserController extends Controller
     //List Users API (GET)
     public function listUsers(){
         $user = Auth::user();
-        if($user->user_type == 1){
-            $users = User::where('is_deleted', null)->get();
-        }else if($user->user_type == 2){
+        if($user->user_type == UserType::ADMIN){
             $users = User::where('franchise_id', $user->id)->where('is_deleted', null)->get();
-        }else{
+        } else{
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthorized access!'
