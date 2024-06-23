@@ -11,7 +11,7 @@ Authorization: Bearer YOUR_API_TOKEN
 X-LICENSE-KEY: YOUR_LICENSE_KEY
 ```
 ## Endpoints
-#### 1. Add Loan API
+#### 1. Create Loan API
 
 **URL:** `/api/loan/add`\
 **Method:** POST\
