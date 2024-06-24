@@ -28,7 +28,7 @@ class ValidateLicenseKey
             return response()->json(['error' => 'License key is required'], 401);
         }
         $tenant_code = $this->generateClientCode($licenseKey);
-        $dotEnvFileName = '.env.'.$this->generateClientCode($licenseKey);
+        $dotEnvFileName = 'client_data/'.$this->generateClientCode($licenseKey);
 
         $dotEnvFilePath = base_path($dotEnvFileName);
 

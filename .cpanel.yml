@@ -6,6 +6,7 @@ deployment:
     - cd /home/tapntrac/public_html/devapi.tapntrack.in
     - if [ ! -f composer.phar ]; then curl -sS https://getcomposer.org/installer | php; fi
     - php composer.phar install --optimize-autoloader --no-dev
+    - php composer.phar dump-autoload --optimize
     - php artisan migrate --force
     - php artisan config:cache
     - php artisan route:cache
