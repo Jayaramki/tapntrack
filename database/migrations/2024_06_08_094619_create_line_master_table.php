@@ -16,6 +16,9 @@ return new class extends Migration
             $table->unsignedInteger('franchise_id')->nullable(false);
             $table->text('name')->nullable(false);
             $table->text('description')->nullable();
+            $table->unsignedInteger('created_by')->nullable(false);
+            $table->unsignedInteger('updated_by')->nullable(false);
+            $table->timestamp('is_deleted')->nullable();
             $table->timestamps();
         });
     }
