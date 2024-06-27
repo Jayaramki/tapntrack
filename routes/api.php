@@ -44,7 +44,7 @@ Route::group([
     Route::get('user/get-all', [UserController::class, 'listUsers']);
     Route::post('user/change-password', [UserController::class, 'changePassword']);
     Route::post('user/update-password/{id}', [UserController::class, 'updateUserPassword']);
-    Route::post('user/delete-user', [UserController::class, 'deleteUser']);
+    Route::post('user/delete/{id}', [UserController::class, 'deleteUser']);
     Route::get('logout', [ApiController::class, 'logout']);
 
     /* Customer Module */
@@ -53,7 +53,7 @@ Route::group([
     Route::get('customer/get/{id}', [CustomerController::class, 'get']);
     Route::get('customer/get-all', [CustomerController::class, 'getAll']);
     Route::get('customer/get-all-active', [CustomerController::class, 'getAllActive']);
-    Route::get('customer/delete/{id}', [CustomerController::class, 'delete']);
+    Route::post('customer/delete/{id}', [CustomerController::class, 'delete']);
 
     /* Loan Module */
     Route::post('loan/add', [LoanController::class, 'add']);

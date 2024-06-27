@@ -55,4 +55,10 @@ class User extends Authenticatable
 
     // Specify the guard for the User model
     protected $guard_name = 'api';
+
+    // Define the relationship with the Franchise model
+    public function franchiseId()
+    {
+        return $this->franchise_id == 0 ? $this->id : $this->franchise_id;
+    }
 }

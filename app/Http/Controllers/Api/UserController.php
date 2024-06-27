@@ -302,14 +302,8 @@ class UserController extends Controller
     }
 
     //Delete User API (POST)
-    public function deleteUser(Request $request){
-        // Data Validation
-        $request->validate([
-            'user_id' => 'required|integer'
-        ]);
-
-        // Delete User
-        $user = User::find($request->user_id);
+    public function deleteUser($id){
+        $user = User::find($id);
         if(!$user){
             return response()->json([
                 'status' => false,
