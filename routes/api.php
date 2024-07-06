@@ -44,7 +44,7 @@ Route::group([
     Route::get('user/get-all', [UserController::class, 'listUsers']);
     Route::post('user/change-password', [UserController::class, 'changePassword']);
     Route::post('user/update-password/{id}', [UserController::class, 'updateUserPassword']);
-    Route::post('user/delete/{id}', [UserController::class, 'deleteUser']);
+    Route::post('user/delete', [UserController::class, 'deleteUser']);
     Route::get('logout', [ApiController::class, 'logout']);
 
     /* Customer Module */
