@@ -49,7 +49,7 @@ Route::group([
 
     /* Customer Module */
     Route::post('customer/add', [CustomerController::class, 'add']);
-    Route::put('customer/update/{id}', [CustomerController::class, 'update']);
+    Route::post('customer/update/{id}', [CustomerController::class, 'update']);
     Route::get('customer/get/{id}', [CustomerController::class, 'get']);
     Route::get('customer/get-all', [CustomerController::class, 'getAll']);
     Route::get('customer/get-all-active', [CustomerController::class, 'getAllActive']);
@@ -57,7 +57,7 @@ Route::group([
 
     /* Loan Module */
     Route::post('loan/add', [LoanController::class, 'add']);
-    Route::put('loan/update/{id}', [LoanController::class, 'update']);
+    Route::post('loan/update/{id}', [LoanController::class, 'update']);
     Route::get('loan/get/{id}', [LoanController::class, 'get']);
     Route::get('loan/get-all', [LoanController::class, 'getAll']);
     Route::get('loan/get-all-by-customer/{cid}', [LoanController::class, 'getAllByCustomerId']);

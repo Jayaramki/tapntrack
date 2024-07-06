@@ -16,7 +16,7 @@ class CustomerController extends Controller
             'name' => 'required|string',
             'phone_number' => 'string|nullable',
             'email_id' => 'email|nullable',
-            'address' => 'required|string',
+            'address' => 'string',
             'profession' => 'string|nullable',
             'is_active' => 'integer|nullable'
         ]);
@@ -122,9 +122,12 @@ class CustomerController extends Controller
     }
 
     //Delete Customer API (POST)
-    public function delete($id){
-        // Update Customer
-        $customer = Customer::find($id);
+    public function delete(Request $request){
+        $request->validate([
+            'customer_id' => 'required|integer'
+        ]);
+        // Find Customer
+        $customer = Customer::find($request->customer_id);
     
         if (!$customer) {
             return response()->json(['message' => 'Customer not found'], 404);
@@ -138,8 +141,7 @@ class CustomerController extends Controller
     
         return response()->json([
             'status' => true,
-            'message' => 'Customer deleted successfully!',
-            'customer' => $customer
+            'message' => 'Customer deleted successfully!'
         ], 200);
     }
 }
