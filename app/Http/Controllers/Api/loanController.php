@@ -10,7 +10,7 @@ use App\Models\loan;
 
 class loanController extends Controller
 {
-    //Add API (POST)
+    //Add Loan API (POST)
     public function add(Request $request){
         $user = Auth::user();
         // Data Validation
