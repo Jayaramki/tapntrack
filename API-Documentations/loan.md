@@ -1,8 +1,8 @@
 # Loan API Documentation
 
-## Base URL
+## Base URL - Dev
 ```
-https://api.<domain-name>.com/
+https://devapi.tapntrack.in/
 ```
 ## Authentication
 All endpoints require a valid License key and API token. Include the token in the Authorization header as follows:

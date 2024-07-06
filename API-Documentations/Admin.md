@@ -1,8 +1,8 @@
 # User API Documentation
 
-## Base URL
+## Base URL - Dev
 ```
-https://api.<domain-name>.com/
+https://devapi.tapntrack.in/
 ```
 ## Authentication
 All endpoints require a valid License key. Include the License key in the `X-LICENSE-KEY` header as follows:
