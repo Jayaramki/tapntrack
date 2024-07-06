@@ -11,7 +11,7 @@ Authorization: Bearer YOUR_API_TOKEN
 X-LICENSE-KEY: YOUR_LICENSE_KEY
 ```
 ## Endpoints
-### 1. Add User API
+### 1. Add User
 
 **URL:** `/api/user/add`\
 **Method:** POST\
@@ -63,7 +63,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 2. Get LoggedIn User Profile API
+### 2. Get LoggedIn User Profile
 
 **URL:** `api/user/get`\
 **Method:** GET\
@@ -97,7 +97,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 3. Get User By ID API
+### 3. Get User By ID
 
 **URL:** `/api/user/get/{id}`\
 **Method:** GET\
@@ -132,7 +132,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 4. Update LoggedIn user profile API
+### 4. Update LoggedIn user profile
 
 **URL:** `/api/user/update`\
 **Method:** POST\
@@ -177,7 +177,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 5. Update User By ID API
+### 5. Update User By ID
 
 **URL:** `/api/user/update/{id}`\
 **Method:** POST\
@@ -223,7 +223,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 6. Change Password API for loggedIn User
+### 6. Change Password for loggedIn User
 
 **URL:** `/api/user/change-password`\
 **Method:** POST\
@@ -259,7 +259,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 7. Admin Changing Password for other users API
+### 7. Admin Changing Password for other users
 
 **URL:** `/api/user/update-password/{id}`\
 **Method:** POST\
@@ -294,7 +294,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 8. Admin Changing Username for other users API
+### 8. Admin Changing Username for other users
 
 **URL:** `/api/user/update-username/{id}`\
 **Method:** POST\
@@ -339,7 +339,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 2. Get All Users API
+### 9. Get All Users
 This API will be used for Admin user to get list of all users under his profile
 
 **URL:** `api/user/get-all`\
