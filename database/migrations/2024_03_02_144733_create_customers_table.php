@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('email_id')->nullable();
             $table->text('address')->nullable();
             $table->text('profession')->nullable();
-            $table->timestamp('is_active')->nullable();
+            $table->tinyInteger('is_active')->default(1)->nullable(false);
             $table->timestamp('is_deleted')->nullable();
             $table->timestamps();
         });
