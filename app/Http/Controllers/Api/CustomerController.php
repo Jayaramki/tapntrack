@@ -18,18 +18,20 @@ class CustomerController extends Controller
             'email_id' => 'email|nullable',
             'address' => 'string',
             'profession' => 'string|nullable',
-            'is_active' => 'integer|nullable'
+            'is_active' => 'integer'
         ]);
+        
+        $is_active = $request->input('is_active', 1);
         
         // Create User
         $customer = Customer::create([
             'franchise_id' => Auth::user()->franchiseId(),
             'name' => $request->name,
             'phone_number' => $request->phone_number,
-            'email_id' => $request->first_name,
-            'address' => $request->last_name,
-            'profession' => $request->email,
-            'is_active' => $request->is_active
+            'email_id' => $request->email_id,
+            'address' => $request->address,
+            'profession' => $request->profession,
+            'is_active' => $is_active
         ]);
 
         return response()->json([
@@ -39,7 +41,7 @@ class CustomerController extends Controller
         ], 201);
     }
 
-    //Update Custome API (PUT)
+    //Update Customer API (PUT)
     public function update(Request $request, $id){
         // Data Validation
         $request->validate([
@@ -48,7 +50,7 @@ class CustomerController extends Controller
             'email_id' => 'email|nullable',
             'address' => 'string|nullable',
             'profession' => 'string|nullable',
-            'is_active' => 'integer|nullable'
+            'is_active' => 'integer'
         ]);
         
         // Update Customer
@@ -60,11 +62,11 @@ class CustomerController extends Controller
 
          // Update the customer fields
         $customer->name = $request->input('name');
-        $customer->phone_number = $request->input('phone_number');
-        $customer->email_id = $request->input('email_id');
-        $customer->address = $request->input('address');
-        $customer->profession = $request->input('profession');
-        $customer->is_active = $request->input('is_active');
+        $customer->phone_number = $request->input('phone_number', $customer->phone_number);
+        $customer->email_id = $request->input('email_id', $customer->email_id);
+        $customer->address = $request->input('address', $customer->address);
+        $customer->profession = $request->input('profession', $customer->profession);
+        $customer->is_active = $request->input('is_active', $customer->is_active);
 
         // Save the changes
         $customer->save();
@@ -92,13 +94,42 @@ class CustomerController extends Controller
         ], 200);
     }
     
-    //Get All Customers API (GET)
-    public function getAll(){
-        // Get All Customers where is_deleted is null
+    //Get All Customers API with Pagination (GET)
+    ///api/customers?page=2&per_page=10
+    public function getAll(Request $request){
+        // Set default page size if not provided
+        $pageSize = $request->input('page_size', 10);
+        $sortField = $request->input('sort', 'id');
+        $sortOrder = $request->input('order', 'asc');
+        $isActive = $request->input('is_active', null);
+
+        // Validate the sort order to prevent SQL injection
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'asc';
+        }
+
+        // Get the filter parameters from the request
+        $filters = $request->only(['name', 'phone_number', 'email_id', 'address', 'profession']);
+
+        // Get All Customers where is_deleted is null with pagination and filters
         $customers = Customer::where('is_deleted', null)
                             ->where('franchise_id', Auth::user()->franchiseId())
-                            ->get();
-                            
+                            ->when($filters, function ($query, $filters) {
+                                foreach ($filters as $column => $value) {
+                                    if ($value !== null) {
+                                        $query->where($column, '%'.$value.'%');
+                                    }
+                                }
+                            })
+                            ->when($isActive === true, function ($query) use ($isActive) {
+                                $query->whereNotNull('is_active');
+                            })
+                            ->when($isActive === null, function ($query) use ($isActive) {
+                                $query->whereNull('is_active');
+                            })
+                            ->orderBy($sortField, $sortOrder)
+                            ->paginate($pageSize);
+
         return response()->json([
             'status' => true,
             'message' => 'Customers fetched successfully!',
@@ -106,28 +137,11 @@ class CustomerController extends Controller
         ], 200);
     }
                         
-    //Get All Active Customers API (GET)
-    public function getAllActive(){
-        // Get All Active Customers and is_deleted is null
-        $customers = Customer::where('is_deleted', null)
-        ->where('franchise_id', Auth::user()->franchiseId())
-        ->where('is_active', 0)
-        ->get();
-                            
-        return response()->json([
-            'status' => true,
-            'message' => 'Active Customers fetched successfully!',
-            'customers' => $customers
-        ], 200);
-    }
 
     //Delete Customer API (POST)
-    public function delete(Request $request){
-        $request->validate([
-            'customer_id' => 'required|integer'
-        ]);
+    public function delete($id){
         // Find Customer
-        $customer = Customer::find($request->customer_id);
+        $customer = Customer::find($id);
     
         if (!$customer) {
             return response()->json(['message' => 'Customer not found'], 404);

@@ -48,12 +48,12 @@ Route::group([
     Route::get('logout', [ApiController::class, 'logout']);
 
     /* Customer Module */
-    Route::post('customer/add', [CustomerController::class, 'add']);
-    Route::post('customer/update/{id}', [CustomerController::class, 'update']);
-    Route::get('customer/get/{id}', [CustomerController::class, 'get']);
-    Route::get('customer/get-all', [CustomerController::class, 'getAll']);
-    Route::get('customer/get-all-active', [CustomerController::class, 'getAllActive']);
-    Route::post('customer/delete/{id}', [CustomerController::class, 'delete']);
+    Route::post('customer', [CustomerController::class, 'add']);
+    Route::put('customer/{id}', [CustomerController::class, 'update']);
+    Route::get('customer/{id}', [CustomerController::class, 'get']);
+    Route::get('customers', [CustomerController::class, 'getAll']);
+    Route::delete('customer/{id}', [CustomerController::class, 'delete']);
+    /* Customer Module */
 
     /* Loan Module */
     Route::post('loan/add', [LoanController::class, 'add']);
