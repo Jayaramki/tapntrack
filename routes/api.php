@@ -36,7 +36,6 @@ Route::group([
 ], function() {
 
     /* User Module */
-    //pass optional parameter for update api
     Route::post('user/add', [UserController::class, 'addUser']);
     Route::get('user/get/{id?}', [UserController::class, 'profile']);
     Route::post('user/update/{id?}', [UserController::class, 'updateProfile']);
@@ -46,6 +45,7 @@ Route::group([
     Route::post('user/update-password/{id}', [UserController::class, 'updateUserPassword']);
     Route::post('user/delete', [UserController::class, 'deleteUser']);
     Route::get('logout', [ApiController::class, 'logout']);
+    /* User Module */
 
     /* Customer Module */
     Route::post('customer', [CustomerController::class, 'add']);
