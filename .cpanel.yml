@@ -3,21 +3,25 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in
 
-    # Copy necessary files to the deployment path
-    - /bin/cp -R app $DEPLOYPATH
-    - /bin/cp -R bootstrap $DEPLOYPATH
-    - /bin/cp -R config $DEPLOYPATH
-    - /bin/cp -R database $DEPLOYPATH
-    - /bin/cp -R public $DEPLOYPATH
-    - /bin/cp -R resources $DEPLOYPATH
-    - /bin/cp -R routes $DEPLOYPATH
-    - /bin/cp -R storage $DEPLOYPATH
-    - /bin/cp -R tests $DEPLOYPATH
-    - /bin/cp -R artisan $DEPLOYPATH
-    - /bin/cp -R composer.json $DEPLOYPATH
-    - /bin/cp -R composer.lock $DEPLOYPATH
-    - /bin/cp -R package.json $DEPLOYPATH
-    - /bin/cp -R webpack.mix.js $DEPLOYPATH
+    # Copy necessary directories and files to the deployment path
+    - /bin/cp -R app $DEPLOYPATH/app
+    - /bin/cp -R bootstrap $DEPLOYPATH/bootstrap
+    - /bin/cp -R config $DEPLOYPATH/config
+    - /bin/cp -R database $DEPLOYPATH/database
+    - /bin/cp -R public $DEPLOYPATH/public
+    - /bin/cp -R resources $DEPLOYPATH/resources
+    - /bin/cp -R routes $DEPLOYPATH/routes
+    - /bin/cp -R storage $DEPLOYPATH/storage
+    - /bin/cp -R tests $DEPLOYPATH/tests
+    - /bin/cp artisan $DEPLOYPATH/artisan
+    - /bin/cp composer.json $DEPLOYPATH/composer.json
+    - /bin/cp composer.lock $DEPLOYPATH/composer.lock
+    - /bin/cp package.json $DEPLOYPATH/package.json
+    - /bin/cp webpack.mix.js $DEPLOYPATH/webpack.mix.js
+
+    # Explicitly copy .htaccess files
+    - /bin/cp .htaccess $DEPLOYPATH/.htaccess
+    - /bin/cp public/.htaccess $DEPLOYPATH/public/.htaccess
 
     # Change to the deployment directory
     - cd $DEPLOYPATH
