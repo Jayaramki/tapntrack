@@ -1,51 +1,14 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in
-
-    # Clear previously deployed files (excluding tenants_data and storage directories)
-    - find $DEPLOYPATH -mindepth 1 -maxdepth 1 ! -name tenants_data ! -name storage -exec rm -rf {} \;
-
-    # Copy necessary directories and files to the deployment path
-    - /bin/cp -R app $DEPLOYPATH/app
-    - /bin/cp -R bootstrap $DEPLOYPATH/bootstrap
-    - /bin/cp -R config $DEPLOYPATH/config
-    - /bin/cp -R database $DEPLOYPATH/database
-    - /bin/cp -R public $DEPLOYPATH/public
-    - /bin/cp -R resources $DEPLOYPATH/resources
-    - /bin/cp -R routes $DEPLOYPATH/routes
-    - /bin/cp -R storage $DEPLOYPATH/storage
-    - /bin/cp -R tests $DEPLOYPATH/tests
-    - /bin/cp artisan $DEPLOYPATH/artisan
-    - /bin/cp composer.json $DEPLOYPATH/composer.json
-    - /bin/cp composer.lock $DEPLOYPATH/composer.lock
-    - /bin/cp package.json $DEPLOYPATH/package.json
-    - /bin/cp index.php $DEPLOYPATH/index.php
-
-    # Explicitly copy .htaccess files
-    - /bin/cp .htaccess $DEPLOYPATH/.htaccess
-    - /bin/cp public/.htaccess $DEPLOYPATH/public/.htaccess
-
-    # Change to the deployment directory
+    - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in/
+    - rsync -av --exclude 'tenants_data' ./ $DEPLOYPATH
     - cd $DEPLOYPATH
-
-    # Ensure Composer is available and install dependencies
     - if [ ! -f composer.phar ]; then curl -sS https://getcomposer.org/installer | php; fi
     - php composer.phar install --optimize-autoloader --no-dev
-
-    # Optimize the Composer autoloader
     - php composer.phar dump-autoload --optimize
-
-    # Clear and cache configuration, routes, and views
-    - php artisan config:clear
-    - php artisan route:clear
-    - php artisan cache:clear
-    - php artisan config:cache
-    - php artisan route:cache
-
-    # Generate Passport keys if they do not exist
     - php artisan passport:keys
-
-    # Set the correct permissions for storage and cache directories
+    - php artisan route:cache
+    - php artisan view:cache
     - chmod -R 755 storage
     - chmod -R 755 bootstrap/cache
