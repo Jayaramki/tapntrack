@@ -13,7 +13,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 ## Endpoints
 ### 1. Add Customer
 
-**URL:** `/api/customer/add`\
+**URL:** `/api/customer`\
 **Method:** POST\
 **Request Payload:**
 ```
@@ -36,8 +36,8 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
         "name": "Customer 222",
         "phone_number": "9876543210",
         "email_id": customer1@tapntrack.in,
-        "profession": null,
-        "is_active": null,
+        "profession": Tailor,
+        "is_active": 1,
         "updated_at": "2024-07-06T11:37:14.000000Z",
         "created_at": "2024-07-06T11:37:14.000000Z",
         "id": 4
@@ -58,7 +58,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 2. Get Customer details
 
-**URL:** `api/customer/get/{id}`\
+**URL:** `api/customer/{id}`\
 **Method:** GET\
 **Success Response:**
 ```
@@ -89,8 +89,8 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 3. Update customer details
 
-**URL:** `/api/customer/update/{id}`\
-**Method:** POST\
+**URL:** `/api/customer/{id}`\
+**Method:** PUT\
 **Request Payload:**
 ```
 {
@@ -131,7 +131,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 4. Get All Customers List
 
-**URL:** `/api/customer/get-all`\
+**URL:** `/api/customers`\
 **Method:** GET\
 **Success Response:**
 ```
@@ -163,48 +163,10 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 5. Get all active customers
+### 5. Delete Customer
 
-**URL:** `/api/customer/get-all-active`\
-**Method:** GET\
-**Success Response:**
-```
-{
-    "status": true,
-    "message": "Active Customers fetched successfully!",
-    "customers": [
-        {
-            "id": 3,
-            "franchise_id": 1,
-            "name": "Customer 22",
-            "phone_number": "9876543210",
-            "email_id": null,
-            "address": null,
-            "profession": null,
-            "is_active": 0,
-            "is_deleted": null,
-            "created_at": "2024-06-27T03:09:51.000000Z",
-            "updated_at": "2024-06-27T03:09:51.000000Z"
-        }
-    ]
-}```
-**Failure Responses**
-```
-{
-    "message": "Unauthenticated."
-}
-```
-
-### 6. Delete Customer
-
-**URL:** `/api/customer/delete`\
-**Method:** POST\
-**Request Payload:**
-```
-{
-    "customer_id": 2
-}
-```
+**URL:** `/api/customer/{id}`\
+**Method:** DELETE\
 **Success Response:**
 ```
 {
