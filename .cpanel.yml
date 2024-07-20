@@ -3,6 +3,9 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in
 
+    # Clear previously deployed files (excluding specific directories)
+    - find $DEPLOYPATH -mindepth 1 -maxdepth 1 ! -name storage ! -name vendor ! -name tenant_data -exec rm -rf {} \;
+
     # Copy necessary directories and files to the deployment path
     - /bin/cp -R app $DEPLOYPATH/app
     - /bin/cp -R bootstrap $DEPLOYPATH/bootstrap
