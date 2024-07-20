@@ -3,7 +3,7 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in/
     - echo "Deploying to $DEPLOYPATH"
-    - find . -path ./tenants_data -prune -o -print0 | xargs -0 -I {} cp -r {} $DEPLOYPATH
+    - /bin/cp -R public/* $DEPLOYPATH
     - echo "Files copied to $DEPLOYPATH"
     - cd $DEPLOYPATH
     - if [ ! -f composer.phar ]; then echo "Installing Composer"; curl -sS https://getcomposer.org/installer | php; fi
