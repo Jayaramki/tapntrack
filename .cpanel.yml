@@ -7,26 +7,26 @@ deployment:
     - find $DEPLOYPATH -mindepth 1 -maxdepth 1 ! -name tenants_data ! -name storage -exec rm -rf {} \;
 
     # Copy necessary directories and files to the deployment path
-    - /bin/cp -R app $DEPLOYPATH/app
-    - /bin/cp -R bootstrap $DEPLOYPATH/bootstrap
-    - /bin/cp -R config $DEPLOYPATH/config
-    - /bin/cp -R database $DEPLOYPATH/database
-    - /bin/cp -R public $DEPLOYPATH/public
-    - /bin/cp -R resources $DEPLOYPATH/resources
-    - /bin/cp -R routes $DEPLOYPATH/routes
-    - /bin/cp -R storage $DEPLOYPATH/storage
-    - /bin/cp -R tests $DEPLOYPATH/tests
-    - /bin/cp artisan $DEPLOYPATH/artisan
-    - /bin/cp composer.json $DEPLOYPATH/composer.json
-    - /bin/cp composer.lock $DEPLOYPATH/composer.lock
-    - /bin/cp package.json $DEPLOYPATH/package.json
-    - /bin/cp webpack.mix.js $DEPLOYPATH/webpack.mix.js
-    - /bin/cp .env $DEPLOYPATH/.env
-    - /bin/cp server.php $DEPLOYPATH/server.php
+    - /bin/cp -R app $DEPLOYPATH
+    - /bin/cp -R bootstrap $DEPLOYPATH
+    - /bin/cp -R config $DEPLOYPATH
+    - /bin/cp -R database $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R resources $DEPLOYPATH
+    - /bin/cp -R routes $DEPLOYPATH
+    - /bin/cp -R storage $DEPLOYPATH
+    - /bin/cp -R tests $DEPLOYPATH
+    - /bin/cp artisan $DEPLOYPATH
+    - /bin/cp composer.json $DEPLOYPATH
+    - /bin/cp composer.lock $DEPLOYPATH
+    - /bin/cp package.json $DEPLOYPATH
+    - /bin/cp webpack.mix.js $DEPLOYPATH
+    - /bin/cp .env $DEPLOYPATH
+    - /bin/cp server.php $DEPLOYPATH
 
     # Explicitly copy .htaccess files
-    - /bin/cp .htaccess $DEPLOYPATH/.htaccess
-    - /bin/cp public/.htaccess $DEPLOYPATH/public/.htaccess
+    - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp public/.htaccess $DEPLOYPATH
 
     # Change to the deployment directory
     - cd $DEPLOYPATH
@@ -39,6 +39,9 @@ deployment:
     - php composer.phar dump-autoload --optimize
 
     # Clear and cache configuration, routes, and views
+    - php artisan config:clear
+    - php artisan route:clear
+    - php artisan cache:clear
     - php artisan config:cache
     - php artisan route:cache
     - php artisan view:cache
