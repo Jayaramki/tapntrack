@@ -35,7 +35,6 @@ Route::get('clear-cache', [CacheController::class, 'clearCache']);
 Route::get('clear-route-cache', [CacheController::class, 'clearRouteCache']);
 Route::get('clear-config-cache', [CacheController::class, 'clearConfigCache']);
 
-
 // Protected Routes
 Route::group([
     "middleware" => ['auth:api']

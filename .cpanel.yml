@@ -1,14 +1,42 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in/
-    - /bin/cp -R public/* $DEPLOYPATH
-    - cd /home/tapntrac/public_html/devapi.tapntrack.in
+    - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in
+
+    # Copy necessary files to the deployment path
+    - /bin/cp -R app $DEPLOYPATH
+    - /bin/cp -R bootstrap $DEPLOYPATH
+    - /bin/cp -R config $DEPLOYPATH
+    - /bin/cp -R database $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R resources $DEPLOYPATH
+    - /bin/cp -R routes $DEPLOYPATH
+    - /bin/cp -R storage $DEPLOYPATH
+    - /bin/cp -R tests $DEPLOYPATH
+    - /bin/cp -R artisan $DEPLOYPATH
+    - /bin/cp -R composer.json $DEPLOYPATH
+    - /bin/cp -R composer.lock $DEPLOYPATH
+    - /bin/cp -R package.json $DEPLOYPATH
+    - /bin/cp -R webpack.mix.js $DEPLOYPATH
+
+    # Change to the deployment directory
+    - cd $DEPLOYPATH
+
+    # Ensure Composer is available and install dependencies
     - if [ ! -f composer.phar ]; then curl -sS https://getcomposer.org/installer | php; fi
     - php composer.phar install --optimize-autoloader --no-dev
+
+    # Optimize the Composer autoloader
     - php composer.phar dump-autoload --optimize
-    - php artisan passport:keys
+
+    # Clear and cache configuration, routes, and views
+    - php artisan config:cache
     - php artisan route:cache
     - php artisan view:cache
+
+    # Generate Passport keys if they do not exist
+    - if [ ! -f storage/oauth-private.key ] || [ ! -f storage/oauth-public.key ]; then php artisan passport:keys; fi
+
+    # Set the correct permissions for storage and cache directories
     - chmod -R 755 storage
     - chmod -R 755 bootstrap/cache
