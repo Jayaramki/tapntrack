@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\CacheController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,11 @@ Route::post('login', [ApiController::class, 'login']);
 Route::post('user/add-admin', [UserController::class, 'addAdminUser']);
 Route::post('user/update-admin/{id}', [UserController::class, 'addAdminUser']);
 
+// Clear Cache
+Route::get('clear-cache', [CacheController::class, 'clearCache']);
+Route::get('clear-route-cache', [CacheController::class, 'clearRouteCache']);
+Route::get('clear-config-cache', [CacheController::class, 'clearConfigCache']);
+
 
 // Protected Routes
 Route::group([
@@ -36,7 +42,7 @@ Route::group([
 ], function() {
 
     /* User Module */
-    Route::post('user/add', [UserController::class, 'addUser']);
+    Route::post('user', [UserController::class, 'addUser']);
     Route::get('user/get/{id?}', [UserController::class, 'profile']);
     Route::post('user/update/{id?}', [UserController::class, 'updateProfile']);
     Route::post('user/update-username/{id?}', [UserController::class, 'changeUsername']);
@@ -48,7 +54,7 @@ Route::group([
     /* User Module */
 
     /* Customer Module */
-    Route::post('customer', [CustomerController::class, 'add']);
+    Route::post('customer', [CustomerController::class, 'create']);
     Route::put('customer/{id}', [CustomerController::class, 'update']);
     Route::get('customer/{id}', [CustomerController::class, 'get']);
     Route::get('customers', [CustomerController::class, 'getAll']);
