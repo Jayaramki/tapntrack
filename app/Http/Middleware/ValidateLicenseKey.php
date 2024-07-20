@@ -28,7 +28,7 @@ class ValidateLicenseKey
             return response()->json(['error' => 'License key is required'], 401);
         }
         $tenant_code = $this->generateClientCode($licenseKey);
-        $dotEnvFileName = 'tenants_data/'.$this->generateClientCode($licenseKey);
+        $dotEnvFileName = 'tenants_data/'.$this->generateClientCode($licenseKey).'.json';
         $dotEnvFilePath = base_path($dotEnvFileName);
 
         if (file_exists($dotEnvFilePath)) {
@@ -83,27 +83,8 @@ class ValidateLicenseKey
         if (!File::exists($filePath)) {
             throw new \Exception("Database configuration file not found at: $filePath");
         }
-
-        // Read the file contents
-        $fileContents = File::get($filePath);
-
-        // Split the contents into lines
-        $lines = explode("\n", $fileContents);
-        $databaseConfig = [];
-
-        // Loop through each line
-        foreach ($lines as $line) {
-            // Split each line into key-value pairs based on the equal sign (=)
-            $parts = explode('=', $line, 2);
-
-            // Check if it's a valid key-value pair
-            if (count($parts) === 2) {
-                $key = trim($parts[0]);
-                $value = trim($parts[1]);
-                $databaseConfig[$key] = $value;
-            }
-        }
-
+        $fileContents = File::get($filePath); // Read the file contents
+        $databaseConfig = json_decode($fileContents, true); // Parse the file contents as JSON
         return $databaseConfig;
     }
 }
