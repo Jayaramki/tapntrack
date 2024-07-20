@@ -42,7 +42,7 @@ Route::group([
 ], function() {
 
     /* User Module */
-    Route::post('user', [UserController::class, 'addUser']);
+    Route::post('user/add', [UserController::class, 'addUser']);
     Route::get('user/get/{id?}', [UserController::class, 'profile']);
     Route::post('user/update/{id?}', [UserController::class, 'updateProfile']);
     Route::post('user/update-username/{id?}', [UserController::class, 'changeUsername']);
@@ -54,7 +54,7 @@ Route::group([
     /* User Module */
 
     /* Customer Module */
-    Route::post('customer', [CustomerController::class, 'create']);
+    Route::post('customer', [CustomerController::class, 'add']);
     Route::put('customer/{id}', [CustomerController::class, 'update']);
     Route::get('customer/{id}', [CustomerController::class, 'get']);
     Route::get('customers', [CustomerController::class, 'getAll']);
