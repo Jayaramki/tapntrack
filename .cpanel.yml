@@ -2,30 +2,50 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in/
-    - echo "Deploying to $DEPLOYPATH"
-    - /bin/cp -R app $DEPLOYPATH
-    - /bin/cp -R bootstrap $DEPLOYPATH
-    - /bin/cp -R config $DEPLOYPATH
-    - /bin/cp -R database $DEPLOYPATH
-    - /bin/cp -R public $DEPLOYPATH
-    - /bin/cp -R resources $DEPLOYPATH
-    - /bin/cp -R routes $DEPLOYPATH
-    - /bin/cp -R storage $DEPLOYPATH
-    - /bin/cp -R tests $DEPLOYPATH
-    - /bin/cp artisan $DEPLOYPATH
-    - /bin/cp composer.json $DEPLOYPATH
-    - /bin/cp package.json $DEPLOYPATH
-    - echo "Files copied to $DEPLOYPATH"
+    - LOGFILE=$DEPLOYPATH/deployment.log
+    - echo "Deploying to $DEPLOYPATH" >> $LOGFILE
+    
+    # Delete existing files except specified ones
+    - echo "Deleting existing files except .env, tenants_data, storage, and vendor" >> $LOGFILE
+    - find $DEPLOYPATH -mindepth 1 -maxdepth 1 ! -name '.env' ! -name 'tenants_data' ! -name 'storage' ! -name 'vendor' -exec rm -rf {} \; >> $LOGFILE 2>&1
+    
+    # Copy necessary files and directories
+    - echo "Copying necessary files to $DEPLOYPATH" >> $LOGFILE
+    - /bin/cp -R app $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp -R bootstrap $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp -R config $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp -R database $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp -R public $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp -R resources $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp -R routes $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp -R storage $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp -R tests $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp artisan $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp composer.json $DEPLOYPATH >> $LOGFILE 2>&1
+    - /bin/cp package.json $DEPLOYPATH >> $LOGFILE 2>&1
+    
+    - echo "Files copied to $DEPLOYPATH" >> $LOGFILE
     - cd $DEPLOYPATH
-    - if [ ! -f composer.phar ]; then echo "Installing Composer"; curl -sS https://getcomposer.org/installer | php; fi
-    - echo "Running Composer install"
-    - php composer.phar install --optimize-autoloader --no-dev
-    - echo "Dumping autoload"
-    - php composer.phar dump-autoload --optimize
-    - echo "Running Artisan commands"
-    - php artisan passport:keys
-    - php artisan route:cache
-    - php artisan view:cache
-    - chmod -R 755 storage
-    - chmod -R 755 bootstrap/cache
-    - echo "Deployment completed"
+    
+    # Install Composer if not present
+    - if [ ! -f composer.phar ]; then echo "Installing Composer" >> $LOGFILE; curl -sS https://getcomposer.org/installer | php >> $LOGFILE 2>&1; fi
+    
+    # Run Composer install
+    - echo "Running Composer install" >> $LOGFILE
+    - php composer.phar install --optimize-autoloader --no-dev >> $LOGFILE 2>&1
+    
+    # Dump Autoload
+    - echo "Dumping autoload" >> $LOGFILE
+    - php composer.phar dump-autoload --optimize >> $LOGFILE 2>&1
+    
+    # Run Artisan commands
+    - echo "Running Artisan commands" >> $LOGFILE
+    - php artisan passport:keys >> $LOGFILE 2>&1
+    - php artisan route:cache >> $LOGFILE 2>&1
+    - php artisan view:cache >> $LOGFILE 2>&1
+    
+    # Set Permissions
+    - chmod -R 755 storage >> $LOGFILE 2>&1
+    - chmod -R 755 bootstrap/cache >> $LOGFILE 2>&1
+    
+    - echo "Deployment completed" >> $LOGFILE
