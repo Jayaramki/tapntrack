@@ -3,8 +3,8 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/tapntrac/public_html/devapi.tapntrack.in
 
-    # Clear previously deployed files (excluding specific directories)
-    - find $DEPLOYPATH -mindepth 1 -maxdepth 1 ! -name storage ! -name vendor ! -name tenant_data -exec rm -rf {} \;
+    # Clear previously deployed files (excluding tenants_data and storage directories)
+    - find $DEPLOYPATH -mindepth 1 -maxdepth 1 ! -name tenants_data ! -name storage -exec rm -rf {} \;
 
     # Copy necessary directories and files to the deployment path
     - /bin/cp -R app $DEPLOYPATH/app
@@ -21,6 +21,8 @@ deployment:
     - /bin/cp composer.lock $DEPLOYPATH/composer.lock
     - /bin/cp package.json $DEPLOYPATH/package.json
     - /bin/cp webpack.mix.js $DEPLOYPATH/webpack.mix.js
+    - /bin/cp .env $DEPLOYPATH/.env
+    - /bin/cp server.php $DEPLOYPATH/server.php
 
     # Explicitly copy .htaccess files
     - /bin/cp .htaccess $DEPLOYPATH/.htaccess
