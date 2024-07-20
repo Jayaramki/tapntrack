@@ -19,5 +19,5 @@ yarn-error.log
 /.idea
 /.vscode
 .composer.lock
-/client_data
-/client_data/*
+/tenants_data
+/tenants_data/*
