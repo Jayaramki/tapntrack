@@ -18,8 +18,7 @@ deployment:
     - /bin/cp -R tests $DEPLOYPATH
     - /bin/cp artisan $DEPLOYPATH
     - /bin/cp composer.json $DEPLOYPATH
-    - /bin/cp composer.lock $DEPLOYPATH
-    - /bin/cp package.json $DEPLOYPATH
+    - /bin/cp package.json $DEPLOYPATH/package.json
     - /bin/cp webpack.mix.js $DEPLOYPATH
     - /bin/cp index.php $DEPLOYPATH
 
