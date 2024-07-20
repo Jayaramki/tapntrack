@@ -21,7 +21,7 @@ deployment:
     - /bin/cp composer.lock $DEPLOYPATH
     - /bin/cp package.json $DEPLOYPATH
     - /bin/cp webpack.mix.js $DEPLOYPATH
-    - /bin/cp server.php $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
 
     # Explicitly copy .htaccess files
     - /bin/cp .htaccess $DEPLOYPATH
