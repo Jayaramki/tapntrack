@@ -59,6 +59,8 @@ class User extends Authenticatable
     // Define the relationship with the Franchise model
     public function franchiseId()
     {
-        return $this->franchise_id == 0 ? $this->id : $this->franchise_id;
+        //if logged in user role is admin, then return logged in user id,
+        //else return franchise_id of logged in user
+        return $this->user_type == 1 ? $this->id : $this->franchise_id;
     }
 }

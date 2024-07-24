@@ -13,7 +13,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 ## Endpoints
 #### 1. Add Loan API
 
-**URL:** `/api/loan/add`\
+**URL:** `/api/loan`\
 **Method:** POST\
 **Request Payload:**
 ```
@@ -62,7 +62,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 2. Get Loan API
 
-**URL:** `/api/loan/get/{id}`\
+**URL:** `/api/loan/{id}`\
 **Method:** GET\
 **Success Response:**
 ```
@@ -80,7 +80,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
       "installment_amt": "integer",
       "disbursed_at": "date",
       "completed_at": "date",
-      "is_deleted": "boolean",
+    "is_deleted": "boolean",
       "created_by": "integer",
       "updated_by": "integer",
       "created_at": "date",
@@ -97,7 +97,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 3. Update Loan API
 
-**URL:** `/api/loan/update/{id}`\
+**URL:** `/api/loan/{id}`\
 **Method:** PUT\
 **Request Payload:**
 ```
@@ -146,7 +146,7 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 
 ### 4. Delete Loan API
 
-**URL:** `/api/loan/delete/{id}`\
+**URL:** `/api/loan/{id}`\
 **Method:** DELETE\
 **Success Response:**
 ```
@@ -161,4 +161,5 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
     "message": "loan not found"
 }
 ```
+
 

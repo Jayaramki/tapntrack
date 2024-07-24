@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Customer;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class CustomerController extends Controller
 {
@@ -50,7 +51,7 @@ class CustomerController extends Controller
             'email_id' => 'email|nullable',
             'address' => 'string|nullable',
             'profession' => 'string|nullable',
-            'is_active' => 'integer'
+            'is_active' => 'enum:0,1'
         ]);
         
         // Update Customer
@@ -97,38 +98,59 @@ class CustomerController extends Controller
     //Get All Customers API with Pagination (GET)
     ///api/customers?page=2&per_page=10
     public function getAll(Request $request){
-        // Set default page size if not provided
-        $pageSize = $request->input('page_size', 10);
-        $sortField = $request->input('sort', 'id');
-        $sortOrder = $request->input('order', 'asc');
-        $isActive = $request->input('is_active', null);
 
-        // Validate the sort order to prevent SQL injection
-        if (!in_array($sortOrder, ['asc', 'desc'])) {
-            $sortOrder = 'asc';
+        // Set a default values
+        $defaultPageSize = 10;
+
+        // Validate the parameters
+        $request->validate([
+            'page_size' => 'integer|min:1|max:100|nullable',
+            'search' => 'string|nullable',
+            'name' => 'string|nullable',
+            'email_id' => 'numeric|nullable',
+            'address' => 'string|nullable',
+            'profession' => 'string|nullable',
+            'is_active' => 'integer|nullable'
+        ]);
+
+        // Get the page size from the request or use the default
+        $pageSize = $request->input('page_size', $defaultPageSize);
+
+        // Define the filterable fields
+        $filterableFields = ['name', 'email_id', 'address', 'profession', 'is_active'];
+
+        // Start building the query
+        $query = Customer::query();
+        $query->where('franchise_id', Auth::user()->franchiseId());
+        $query->whereNull('is_deleted');
+
+        // Add filters dynamically
+        foreach ($filterableFields as $field) {
+            if ($request->filled($field)) {
+                if ($field === 'is_active') {
+                    // Exact match for numeric fields
+                    $query->where($field, $request->input($field));
+                } else {
+                    // Partial match for string fields
+                    $query->where($field, 'like', '%' . $request->input($field) . '%');
+                }
+            }
         }
 
-        // Get the filter parameters from the request
-        $filters = $request->only(['name', 'phone_number', 'email_id', 'address', 'profession']);
+        // Handle general search across multiple columns
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search, $filterableFields) {
+                foreach ($filterableFields as $field) {
+                    if ($field !== 'is_active') { // Exclude non-string fields from general search
+                        $q->orWhere($field, 'like', '%' . $search . '%');
+                    }
+                }
+            });
+        }
 
-        // Get All Customers where is_deleted is null with pagination and filters
-        $customers = Customer::where('is_deleted', null)
-                            ->where('franchise_id', Auth::user()->franchiseId())
-                            ->when($filters, function ($query, $filters) {
-                                foreach ($filters as $column => $value) {
-                                    if ($value !== null) {
-                                        $query->where($column, '%'.$value.'%');
-                                    }
-                                }
-                            })
-                            ->when($isActive === true, function ($query) use ($isActive) {
-                                $query->whereNotNull('is_active');
-                            })
-                            ->when($isActive === null, function ($query) use ($isActive) {
-                                $query->whereNull('is_active');
-                            })
-                            ->orderBy($sortField, $sortOrder)
-                            ->paginate($pageSize);
+        // Paginate the results
+        $customers = $query->paginate($pageSize);
 
         return response()->json([
             'status' => true,

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\CacheController;
 
 /*
@@ -61,13 +62,14 @@ Route::group([
     /* Customer Module */
 
     /* Loan Module */
-    Route::post('loan/add', [LoanController::class, 'add']);
-    Route::post('loan/update/{id}', [LoanController::class, 'update']);
-    Route::get('loan/get/{id}', [LoanController::class, 'get']);
-    Route::get('loan/get-all', [LoanController::class, 'getAll']);
+    Route::post('loan', [LoanController::class, 'add']);
+    Route::put('loan/{id}', [LoanController::class, 'update']);
+    Route::get('loan/{id}', [LoanController::class, 'get']);
+    Route::get('loans', [LoanController::class, 'getAll']);
+    Route::delete('loan/{id}', [LoanController::class, 'delete']);
+
     Route::get('loan/get-all-by-customer/{cid}', [LoanController::class, 'getAllByCustomerId']);
     Route::get('loan/get-all-by-line/{line_id}', [LoanController::class, 'getAllByLineId']);
-    Route::get('loan/delete/{id}', [LoanController::class, 'delete']);
     Route::get('loan/check-loan-number/{loan_number}', [LoanController::class, 'checkLoanNumberExists']);
     Route::get('loan/create-loan-number', [LoanController::class, 'createLoanNumber']);
 });
