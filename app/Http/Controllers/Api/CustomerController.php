@@ -61,7 +61,7 @@ class CustomerController extends Controller
             return response()->json(['message' => 'Customer not found'], 404);
         }
 
-         // Update the customer fields
+        // Update the customer fields
         $customer->name = $request->input('name');
         $customer->phone_number = $request->input('phone_number', $customer->phone_number);
         $customer->email_id = $request->input('email_id', $customer->email_id);

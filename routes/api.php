@@ -42,14 +42,14 @@ Route::group([
 ], function() {
 
     /* User Module */
-    Route::post('user/add', [UserController::class, 'addUser']);
-    Route::get('user/get/{id?}', [UserController::class, 'profile']);
-    Route::post('user/update/{id?}', [UserController::class, 'updateProfile']);
-    Route::post('user/update-username/{id?}', [UserController::class, 'changeUsername']);
-    Route::get('user/get-all', [UserController::class, 'listUsers']);
+    Route::post('user', [UserController::class, 'addUser']);
+    Route::get('user/{id?}', [UserController::class, 'profile']);
+    Route::put('user/{id?}', [UserController::class, 'updateProfile']);
+    //Route::post('user/update-username/{id?}', [UserController::class, 'changeUsername']);
+    Route::get('users', [UserController::class, 'listUsers']);
     Route::post('user/change-password', [UserController::class, 'changePassword']);
     Route::post('user/update-password/{id}', [UserController::class, 'updateUserPassword']);
-    Route::post('user/delete', [UserController::class, 'deleteUser']);
+    Route::delete('user/delete', [UserController::class, 'deleteUser']);
     Route::get('logout', [ApiController::class, 'logout']);
     /* User Module */
 
@@ -67,9 +67,5 @@ Route::group([
     Route::get('loan/{id}', [LoanController::class, 'get']);
     Route::get('loans', [LoanController::class, 'getAll']);
     Route::delete('loan/{id}', [LoanController::class, 'delete']);
-
-    Route::get('loan/get-all-by-customer/{cid}', [LoanController::class, 'getAllByCustomerId']);
-    Route::get('loan/get-all-by-line/{line_id}', [LoanController::class, 'getAllByLineId']);
-    Route::get('loan/check-loan-number/{loan_number}', [LoanController::class, 'checkLoanNumberExists']);
     Route::get('loan/create-loan-number', [LoanController::class, 'createLoanNumber']);
 });

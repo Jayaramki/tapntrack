@@ -138,21 +138,37 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 {
     "status": true,
     "message": "Customers fetched successfully!",
-    "customers": [
-        {
-            "id": 3,
-            "franchise_id": 1,
-            "name": "Customer 22",
-            "phone_number": "9876543210",
-            "email_id": null,
-            "address": null,
-            "profession": null,
-            "is_active": 0,
-            "is_deleted": null,
-            "created_at": "2024-06-27T03:09:51.000000Z",
-            "updated_at": "2024-06-27T03:09:51.000000Z"
-        }
-    ]
+    "customers": {
+        "current_page": 1,
+        "data": [],
+        "first_page_url": "https://devapi.tapntrack.in/api/customers?page=1",
+        "from": null,
+        "last_page": 1,
+        "last_page_url": "https://devapi.tapntrack.in/api/customers?page=1",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "https://devapi.tapntrack.in/api/customers?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": null,
+        "path": "https://devapi.tapntrack.in/api/customers",
+        "per_page": 10,
+        "prev_page_url": null,
+        "to": null,
+        "total": 0
+    }
 }
 ```
 **Failure Response**

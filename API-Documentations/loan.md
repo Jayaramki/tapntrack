@@ -144,7 +144,41 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
 }
 ```
 
-### 4. Delete Loan API
+### 4. Get All Loans List
+
+**URL:** `/api/loans`\
+**Method:** GET\
+**Success Response:**
+```
+{
+    "status": true,
+    "message": "Customers fetched successfully!",
+    "customers": [
+        {
+            "id": 3,
+            "franchise_id": 1,
+            "name": "Customer 22",
+            "phone_number": "9876543210",
+            "email_id": null,
+            "address": null,
+            "profession": null,
+            "is_active": 0,
+            "is_deleted": null,
+            "created_at": "2024-06-27T03:09:51.000000Z",
+            "updated_at": "2024-06-27T03:09:51.000000Z"
+        }
+    ]
+}
+```
+**Failure Response**
+```
+{
+    "status": false,
+    "message": "User not found!"
+}
+```
+
+### 5. Delete Loan API
 
 **URL:** `/api/loan/{id}`\
 **Method:** DELETE\
@@ -161,5 +195,3 @@ X-LICENSE-KEY: YOUR_LICENSE_KEY
     "message": "loan not found"
 }
 ```
-
-

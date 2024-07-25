@@ -181,7 +181,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    //Update Profile API (POST)
+    //Update Profile API (PUT)
     public function updateProfile(Request $request, $id=null){
 
         if($id){
@@ -206,12 +206,13 @@ class UserController extends Controller
             'is_active' => 'boolean|nullable'
         ]);
 
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-        $user->is_active = $request->is_active;
+        // Update the user fields
+        $user->first_name = $request->input('first_name', $user->first_name);
+        $user->last_name = $request->input('last_name', $user->last_name);
+        $user->email = $request->input('email', $user->email);
+        $user->phone = $request->input('phone', $user->phone);
+        $user->address = $request->input('address', $user->address);
+        $user->is_active = $request->input('is_active', $user->is_active);
         $user->save();
 
         return response()->json([
@@ -325,17 +326,64 @@ class UserController extends Controller
     }
 
     //List Users API (GET)
-    public function listUsers(){
-        $user = Auth::user();
-        if($user->user_type == UserType::ADMIN){
-            $users = User::where('franchise_id', $user->id)->where('is_deleted', null)->get();
-        } else{
-            return response()->json([
-                'status' => false,
-                'message' => 'Unauthorized access!'
-            ], 401);
+    public function listUsers(Request $request){
+
+        // Set a default values
+        $defaultPageSize = 10;
+
+        // Validate the parameters
+        $request->validate([
+            'page_size' => 'integer|min:1|max:100|nullable',
+            'search' => 'string|nullable',
+            'user_type' => 'integer|nullable',
+            'username' => 'string|nullable',
+            'first_name' => 'string|nullable',
+            'last_name' => 'string|nullable',
+            'email' => 'string|nullable',
+            'phone' => 'string|nullable',
+            'address' => 'string|nullable',
+            'is_active' => 'integer|nullable'
+        ]);
+
+        // Get the page size from the request or use the default
+        $pageSize = $request->input('page_size', $defaultPageSize);
+
+        // Define the filterable fields
+        $filterableFields = ['user_type', 'username', 'first_name', 'last_name', 'email', 'phone', 'address', 'is_active'];
+
+        // Start building the query
+        $query = User::query();
+        $query->where('franchise_id', Auth::user()->franchiseId());
+        $query->whereNull('is_deleted');
+
+        // Add filters dynamically
+        foreach ($filterableFields as $field) {
+            if ($request->filled($field)) {
+                if (in_array($field, ['is_active', 'user_type', 'username'])) {
+                    // Exact match for specific fields
+                    $query->where($field, $request->input($field));
+                } else {
+                    // Partial match for all other fields
+                    $query->where($field, 'like', '%' . $request->input($field) . '%');
+                }
+            }
         }
 
+        // Handle general search across multiple columns
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search, $filterableFields) {
+                foreach ($filterableFields as $field) {
+                    if (!in_array($field, ['is_active', 'user_type', 'username'])) { // Exclude non-string fields from general search
+                        $q->orWhere($field, 'like', '%' . $search . '%');
+                    }
+                }
+            });
+        }
+
+        // Paginate the results
+        $users = $query->paginate($pageSize);
+        
         return response()->json([
             'status' => true,
             'message' => 'Users fetched successfully!',
