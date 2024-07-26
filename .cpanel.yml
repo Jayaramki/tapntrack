@@ -40,7 +40,8 @@ deployment:
     
     # Run Artisan commands
     - echo "Running Artisan commands" >> $LOGFILE
-    - php artisan passport:keys >> $LOGFILE 2>&1
+    #- php artisan passport:keys >> $LOGFILE 2>&1 # Need to enable only fresh deployment
+    - php artisan config:cache >> $LOGFILE 2>&1
     - php artisan route:cache >> $LOGFILE 2>&1
     - php artisan view:cache >> $LOGFILE 2>&1
     
